@@ -12,7 +12,7 @@ import {
 } from "lucide-react";
 import closeEyeAvatar from "../assets/images/close-eye-avatar.png";
 import smileAvatar from "../assets/images/smile-avatar.png";
-import resumePdf from "../assets/resuem/Jay-An's Resume (mark).pdf";
+import resumePdf from "../assets/resuem/Jayan's Resume(Mar&WAM).pdf";
 
 // Reusable Reveal component for scroll-triggered animations
 const Reveal = ({ children, width = "w-full", delay = 0 }) => {
