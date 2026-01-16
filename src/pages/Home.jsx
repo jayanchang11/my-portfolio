@@ -88,7 +88,7 @@ export default function Home({ onOpenClosetCloud }) {
     {
       id: "closetcloud",
       title: "ClosetCloud",
-      category: "Product Design",
+      category: "UX Design",
       description:
         "ClosetCloud is a peer-to-peer clothing rental platform that connects people who want to rent, lend, or share affordable outfits directly from one another’s closets",
       color: "bg-blue-600",
