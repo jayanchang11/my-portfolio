@@ -40,6 +40,7 @@ import sbSubmit from "../assets/images/sb-submit.png";
 import sbProfile from "../assets/images/sb-profile.png";
 import sbChecking from "../assets/images/sb-checking.png";
 import sbRanking from "../assets/images/sb-ranking.png";
+import sbMockup from "../assets/images/sb-mockup.png";
 
 const sections = [
   { id: "overview", label: "Overview" },
@@ -143,11 +144,11 @@ export default function IBMSkillsBuild({ onBack }) {
             </p>
           </Reveal>
           <div className="hidden md:block relative h-full">
-            <div className="absolute top-0 right-0 w-80 h-[500px] bg-[#161616] rounded-t-3xl border-4 border-[#393939] shadow-2xl flex items-center justify-center">
+            <div className="absolute -top-6 right-0 w-[520px] h-[680px] flex items-center justify-center">
               <img
-                src={ibmHomepage}
-                alt="IBM SkillsBuild WeChat Mini Program"
-                className="w-full h-full object-cover rounded-t-3xl"
+                src={sbMockup}
+                alt="IBM SkillsBuild WeChat Mini Program mockup"
+                className="w-full h-full object-contain drop-shadow-2xl"
               />
             </div>
           </div>
