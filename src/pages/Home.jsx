@@ -54,7 +54,7 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
   );
 };
 
-export default function Home({ onOpenClosetCloud }) {
+export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -322,6 +322,10 @@ export default function Home({ onOpenClosetCloud }) {
                   onClick={() => {
                     if (project.id === "closetcloud") {
                       onOpenClosetCloud();
+                      return;
+                    }
+                    if (project.id === "ibm-skillsbuild") {
+                      onOpenIbmSkillsBuild();
                       return;
                     }
                     if (project.link) {

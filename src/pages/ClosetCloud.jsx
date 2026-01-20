@@ -28,6 +28,7 @@ import infoArchClosetcloud from "../assets/images/info-arch-closetcloud.jpeg";
 import homepage1 from "../assets/images/Homepage-1.jpg";
 import homepage2 from "../assets/images/Homepage-2.jpg";
 import homepage3 from "../assets/images/Homepage-3.jpg";
+import ccDesignScheme from "../assets/images/cc-design-scheme.jpg";
 import homeMockup from "../assets/images/home-mockup.jpg";
 import addItemMockup from "../assets/images/add-item-mockup.jpg";
 import discoveryMockup from "../assets/images/discovery-mockup.jpg";
@@ -70,6 +71,7 @@ const sections = [
   { id: "information-architecture", label: "Information Architecture" },
     { id: "prototypes", label: "Low Fidelity Prototypes" },
   { id: "testing", label: "Usability Testing" },
+  { id: "ui-scheme", label: "UI Scheme" },
   { id: "iterations", label: "Iterations" },
 ];
 
@@ -113,27 +115,29 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
   );
 };
 
-export default function ClosetCloud({ onBack }) {
+export default function ClosetCloud({ onBack, onNextProject }) {
   const [activeSection, setActiveSection] = useState("");
   const activeSectionRef = useRef("");
   const [bannerVisible, setBannerVisible] = useState(false);
   const [iterationsInView, setIterationsInView] = useState(false);
+  const iterationsInViewRef = useRef(false);
   const [heroInView, setHeroInView] = useState(true);
 
   useEffect(() => {
     const ids = sections.map((section) => section.id);
     let ticking = false;
 
-    const updateActiveSection = () => {
-      ticking = false;
-      const offset = 140;
-      let current = "";
-      ids.forEach((id) => {
-        const el = document.getElementById(id);
-        if (!el) return;
-        if (el.getBoundingClientRect().top <= offset) {
-          current = id;
-        }
+      const updateActiveSection = () => {
+        ticking = false;
+        const offset = 140;
+        let current = "";
+        ids.forEach((id) => {
+          if (id === "iterations" && !iterationsInViewRef.current) return;
+          const el = document.getElementById(id);
+          if (!el) return;
+          if (el.getBoundingClientRect().top <= offset) {
+            current = id;
+          }
       });
       if (current && current !== activeSectionRef.current) {
         activeSectionRef.current = current;
@@ -282,15 +286,16 @@ export default function ClosetCloud({ onBack }) {
 
   useEffect(() => {
     let ticking = false;
-    const updateIterationsInView = () => {
-      ticking = false;
-      const target = document.getElementById("iterations");
-      if (!target) return;
-      const rect = target.getBoundingClientRect();
-      const marker = 240;
-      const isInView = rect.top <= marker && rect.bottom >= marker;
-      setIterationsInView(isInView);
-    };
+      const updateIterationsInView = () => {
+        ticking = false;
+        const target = document.getElementById("iterations");
+        if (!target) return;
+        const rect = target.getBoundingClientRect();
+        const marker = 240;
+        const isInView = rect.top <= marker && rect.bottom >= marker;
+        iterationsInViewRef.current = isInView;
+        setIterationsInView(isInView);
+      };
 
     const onScroll = () => {
       if (!ticking) {
@@ -853,6 +858,31 @@ export default function ClosetCloud({ onBack }) {
             </Reveal>
           </section>
 
+          {/* UI Scheme */}
+          <section id="ui-scheme">
+            <Reveal>
+              <h3 className="text-4xl font-black tracking-tighter uppercase mb-6">UI Scheme</h3>
+              <div className="w-full flex justify-center">
+                <a
+                  href={ccDesignScheme}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="w-full max-w-5xl rounded-3xl shadow-xl border border-gray-100 overflow-hidden transition-transform duration-300 hover:scale-[1.02] focus:outline-none focus:ring-4 focus:ring-[#E1A560]/30"
+                >
+                  <img
+                    src={ccDesignScheme}
+                    alt="ClosetCloud UI scheme"
+                    className="w-full h-full object-cover"
+                  />
+                </a>
+              </div>
+              <div className="mt-4 flex items-center justify-center space-x-2 text-sm text-gray-600">
+                <Search size={16} />
+                <span>Click to view full image</span>
+              </div>
+            </Reveal>
+          </section>
+
           {/* Final Iterations Footer */}
           <section
             id="iterations"
@@ -1041,11 +1071,11 @@ export default function ClosetCloud({ onBack }) {
                     </div>
                   ))}
                 </div>
-                <button
-                  onClick={onBack}
-                  className="mt-4 flex items-center space-x-2 font-black uppercase text-sm tracking-[0.2em] hover:text-[#E1A560] transition-colors"
-                >
-                  <span>Next Project: Hand Jump Dino Game</span>
+              <button
+                onClick={onNextProject}
+                className="mt-4 flex items-center space-x-2 font-black uppercase text-sm tracking-[0.2em] hover:text-[#E1A560] transition-colors"
+              >
+                  <span>Next Project: IBM SkillsBuild WeChat Mini Program</span>
                   <ArrowRight size={18} />
                 </button>
               </div>
