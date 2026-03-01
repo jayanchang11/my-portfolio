@@ -57,6 +57,7 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
 export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [selectedWorkFilter, setSelectedWorkFilter] = useState("uiux-design");
 
   useEffect(() => {
     const handleScroll = () => {
@@ -89,6 +90,7 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
       id: "closetcloud",
       title: "ClosetCloud",
       category: "UX Design",
+      workType: "uiux-design",
       description:
         "ClosetCloud is a peer-to-peer clothing rental platform that connects people who want to rent, lend, or share affordable outfits directly from one another’s closets",
       color: "bg-blue-600",
@@ -99,6 +101,7 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
       id: "hand-jump-dino",
       title: "Hand Jump Dino Game",
       category: "Interactive Game",
+      workType: "interactive-art",
       description:
         "I recreated Google’s Dino Game as a more interactive experience using p5.js and an AI model that detects changes in users’ hand gestures to control the character’s jump.",
       color: "bg-emerald-500",
@@ -109,6 +112,7 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
       id: "ibm-skillsbuild",
       title: "IBM SkillsBuild WeChat Mini Program",
       category: "UX Design",
+      workType: "uiux-design",
       description:
         "A streamlined version of the SkillsBuild platform that offers different online courses, dedicated to develop individuals’ professional & technical skills",
       color: "bg-orange-500",
@@ -116,15 +120,60 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
     },
     {
       id: "synth-ai",
-      title: "Synth AI",
-      category: "Interaction Design",
+      title: "Jolin Tsai's Ugly Beauty",
+      category: "Graphic Design",
+      workType: "graphic-design",
       description:
-        "Natural language interface for complex creative sound design and synthesis.",
+        "Redesigning Jolin Tsai’s Ugly Beauty album cover in a mixed-media style, highlighting the break from conventional beauty standards.",
       color: "bg-purple-600",
-      image:
-        "https://images.unsplash.com/photo-1614028674026-a65e31bfd27c?auto=format&fit=crop&q=80&w=800",
+      image: new URL("../assets/images/ugly-beauty.png", import.meta.url).href,
+      link: "https://www.behance.net/gallery/244943379/Jolin-Tsais-Ugly-Beauty-(album-cover-redesgin)",
+    },
+    {
+      id: "colour-studio",
+      title: "Colour Studio",
+      category: "Graphic Design",
+      workType: "graphic-design",
+      description:
+        "Exploring the possibilities and visual expressions of color, inspired by everyday life in Taiwan and the interaction between different color combinations.",
+      color: "bg-purple-600",
+      image: new URL("../assets/images/color-folio.png", import.meta.url).href,
+      link: "https://www.behance.net/gallery/229851375/Colour-Studio-Folio",
+    },
+    {
+      id: "files-of-invasion",
+      title: "Files of Invasion",
+      category: "Graphic Design",
+      workType: "graphic-design",
+      description:
+        "In this project, Files of Invasion, I divided the work into two separate files, each exploring a different form of invasion: surveillance and war.",
+      color: "bg-purple-600",
+      image: new URL("../assets/images/war.png", import.meta.url).href,
+      link: "https://www.behance.net/gallery/244944231/Files-of-Invasion",
+    },
+    {
+      id: "the-invader",
+      title: "The Invader",
+      category: "Films/Videos & Photography",
+      workType: "films-videos-photography",
+      description:
+        "A man uses a surveillance website to track events happening around the world through security cameras. Thrilled, he watches as the CCTV footage repeatedly shows people encountering death. Eventually, he realizes that he is being watched as well.",
+      color: "bg-purple-600",
+      image: new URL("../assets/images/paper-cat.png", import.meta.url).href,
+      link: "https://vimeo.com/932822456?fl=pl&fe=sh",
     },
   ];
+
+  const workFilters = [
+    { id: "uiux-design", label: "UI/UX Design" },
+    { id: "graphic-design", label: "Graphic Design" },
+    { id: "films-videos-photography", label: "Films/Videos & Photography" },
+    { id: "interactive-art", label: "Interactive Art" },
+  ];
+
+  const filteredProjects = projects.filter(
+    (project) => project.workType === selectedWorkFilter
+  );
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] text-[#121212] font-sans selection:bg-[#2563EB] selection:text-white overflow-x-hidden">
@@ -300,10 +349,10 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
       </section>
 
       {/* Selected Works Grid */}
-      <section id="work" className="py-24 px-6 bg-[#121212] text-white">
+      <section id="work" className="relative pt-32 pb-20 md:pt-48 md:pb-40 px-6 bg-[#121212] text-white">
         <div className="max-w-7xl mx-auto">
           <Reveal>
-            <div className="flex flex-col md:flex-row justify-between items-end mb-20 space-y-8 md:space-y-0">
+            <div className="flex flex-col lg:flex-row lg:justify-between lg:items-end gap-8 mb-16">
               <div>
                 <h3 className="text-sm font-bold tracking-[0.3em] uppercase mb-4 text-[#2563EB]">
                   Selected Works
@@ -312,12 +361,39 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
                   Portfolio
                 </h2>
               </div>
+
+              <div className="w-full lg:max-w-[56%]">
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 border border-white/20 rounded-2xl lg:rounded-full p-1.5 bg-white/5">
+                  {workFilters.map((filter) => {
+                    const isActive = selectedWorkFilter === filter.id;
+                    return (
+                      <button
+                        key={filter.id}
+                        type="button"
+                        onClick={() => setSelectedWorkFilter(filter.id)}
+                        className={`w-full px-3 py-2 rounded-full text-[10px] md:text-xs font-bold tracking-[0.12em] uppercase text-center transition-all duration-300 ${
+                          isActive
+                            ? "bg-[#2563EB] text-white"
+                            : "text-white/70 hover:text-white hover:bg-white/10"
+                        }`}
+                      >
+                        {filter.label}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
           </Reveal>
 
-          <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
-            {projects.map((project, index) => (
-              <Reveal key={project.id} delay={index % 2 === 0 ? 0 : 0.1}>
+          <div className="overflow-x-auto pb-3 project-scrollbar">
+            <div className="flex gap-8 lg:gap-12 snap-x snap-mandatory">
+            {filteredProjects.map((project, index) => (
+              <Reveal
+                key={project.id}
+                width="shrink-0 w-[82vw] sm:w-[420px] lg:w-[460px] snap-start"
+                delay={index % 2 === 0 ? 0 : 0.1}
+              >
                 <div
                   onClick={() => {
                     if (project.id === "closetcloud") {
@@ -369,7 +445,14 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
                 </div>
               </Reveal>
             ))}
+            </div>
           </div>
+
+          {filteredProjects.length === 0 && (
+            <div className="mt-8 text-white/70 text-sm uppercase tracking-widest">
+              No projects in this category yet.
+            </div>
+          )}
         </div>
       </section>
 
@@ -517,6 +600,29 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
         body {
           font-family: 'Inter', sans-serif;
           scroll-behavior: smooth;
+        }
+
+        .project-scrollbar {
+          scrollbar-width: thin;
+          scrollbar-color: #2563EB rgba(255, 255, 255, 0.2);
+        }
+
+        .project-scrollbar::-webkit-scrollbar {
+          height: 10px;
+        }
+
+        .project-scrollbar::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.15);
+          border-radius: 9999px;
+        }
+
+        .project-scrollbar::-webkit-scrollbar-thumb {
+          background: #2563EB;
+          border-radius: 9999px;
+        }
+
+        .project-scrollbar::-webkit-scrollbar-thumb:hover {
+          background: #1d4ed8;
         }
 
         .tracking-tighter {
