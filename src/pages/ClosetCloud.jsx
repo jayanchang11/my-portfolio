@@ -76,7 +76,7 @@ const sections = [
 ];
 
 // Reusable Reveal component for scroll-triggered animations
-const Reveal = ({ children, width = "w-full", delay = 0 }) => {
+const Reveal = ({ children, width = "w-full", delay = 0, threshold = 0.15 }) => {
   const ref = useRef(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -88,7 +88,7 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
           observer.unobserve(entry.target);
         }
       },
-      { threshold: 0.15 }
+      { threshold }
     );
 
     if (ref.current) {
@@ -98,7 +98,7 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
     return () => {
       if (ref.current) observer.unobserve(ref.current);
     };
-  }, []);
+  }, [threshold]);
 
   return (
     <div
@@ -891,7 +891,7 @@ export default function ClosetCloud({ onBack, onNextProject }) {
             }`}
             style={{ marginLeft: "calc(50% - 50vw)", marginRight: "calc(50% - 50vw)", width: "100vw" }}
           >
-            <Reveal>
+            <div>
               <div className="max-w-5xl mx-auto px-2 sm:px-6">
                 <h3 className="text-4xl font-black tracking-tighter uppercase mb-6">
                   Final Iterations
@@ -1079,7 +1079,7 @@ export default function ClosetCloud({ onBack, onNextProject }) {
                   <ArrowRight size={18} />
                 </button>
               </div>
-            </Reveal>
+            </div>
           </section>
         </main>
       </div>
