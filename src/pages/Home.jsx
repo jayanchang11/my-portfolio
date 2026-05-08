@@ -54,7 +54,7 @@ const Reveal = ({ children, width = "w-full", delay = 0 }) => {
   );
 };
 
-export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
+export default function Home({ projectRoutes }) {
   const [scrolled, setScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [selectedWorkFilter, setSelectedWorkFilter] = useState("uiux-design");
@@ -160,7 +160,7 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
         "A man uses a surveillance website to track events happening around the world through security cameras. Thrilled, he watches as the CCTV footage repeatedly shows people encountering death. Eventually, he realizes that he is being watched as well.",
       color: "bg-purple-600",
       image: new URL("../assets/images/paper-cat.png", import.meta.url).href,
-      link: "https://vimeo.com/932822456?fl=pl&fe=sh",
+      link: "https://youtu.be/bSX9gFzRBT4",
     },
   ];
 
@@ -174,6 +174,14 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
   const filteredProjects = projects.filter(
     (project) => project.workType === selectedWorkFilter
   );
+
+  const getProjectHref = (project) => {
+    if (projectRoutes[project.id]) {
+      return projectRoutes[project.id];
+    }
+
+    return project.link;
+  };
 
   return (
     <div className="min-h-screen bg-[#F5F5F7] text-[#121212] font-sans selection:bg-[#2563EB] selection:text-white overflow-x-hidden">
@@ -394,20 +402,10 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
                 width="shrink-0 w-[82vw] sm:w-[420px] lg:w-[460px] snap-start"
                 delay={index % 2 === 0 ? 0 : 0.1}
               >
-                <div
-                  onClick={() => {
-                    if (project.id === "closetcloud") {
-                      onOpenClosetCloud();
-                      return;
-                    }
-                    if (project.id === "ibm-skillsbuild") {
-                      onOpenIbmSkillsBuild();
-                      return;
-                    }
-                    if (project.link) {
-                      window.open(project.link, "_blank", "noopener,noreferrer");
-                    }
-                  }}
+                <a
+                  href={getProjectHref(project)}
+                  target={project.link ? "_blank" : undefined}
+                  rel={project.link ? "noopener,noreferrer" : undefined}
                   className="group relative overflow-hidden bg-zinc-900 rounded-2xl cursor-pointer"
                 >
                   <div className="aspect-[4/5] md:aspect-square overflow-hidden">
@@ -429,20 +427,20 @@ export default function Home({ onOpenClosetCloud, onOpenIbmSkillsBuild }) {
                       {project.description}
                     </p>
                     <div className="opacity-0 group-hover:opacity-100 transition-opacity duration-500 delay-300">
-                      <button className="flex items-center space-x-2 font-bold text-sm uppercase tracking-widest border-b border-white pb-1 group/btn">
+                      <span className="flex items-center space-x-2 font-bold text-sm uppercase tracking-widest border-b border-white pb-1 group/btn">
                         <span>View Case Study</span>
                         <ExternalLink
                           size={16}
                           className="group-hover/btn:rotate-45 transition-transform"
                         />
-                      </button>
+                      </span>
                     </div>
                   </div>
 
                   <div className="absolute top-6 right-6 w-12 h-12 rounded-full border border-white/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                     <ArrowRight size={20} className="-rotate-45" />
                   </div>
-                </div>
+                </a>
               </Reveal>
             ))}
             </div>

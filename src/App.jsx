@@ -3,30 +3,58 @@ import Home from "./pages/Home";
 import ClosetCloud from "./pages/ClosetCloud";
 import IBMSkillsBuild from "./pages/IBMSkillsBuild";
 
+const HOME_ROUTE = "#/";
+const PROJECT_ROUTES = {
+  closetcloud: "#/projects/closetcloud",
+  "ibm-skillsbuild": "#/projects/ibm-skillsbuild",
+};
+
+const getCurrentRoute = () => {
+  if (!window.location.hash || window.location.hash === "#") {
+    return HOME_ROUTE;
+  }
+
+  return window.location.hash;
+};
+
 export default function App() {
-  const [currentPage, setCurrentPage] = useState("home");
+  const [currentRoute, setCurrentRoute] = useState(getCurrentRoute);
+
+  useEffect(() => {
+    const handleHashChange = () => {
+      setCurrentRoute(getCurrentRoute());
+    };
+
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   useEffect(() => {
     // Scroll to top when switching pages
     window.scrollTo(0, 0);
-  }, [currentPage]);
+  }, [currentRoute]);
 
-  if (currentPage === "closetcloud") {
+  if (currentRoute === PROJECT_ROUTES.closetcloud) {
     return (
       <ClosetCloud
-        onBack={() => setCurrentPage("home")}
-        onNextProject={() => setCurrentPage("ibm-skillsbuild")}
+        onBack={() => {
+          window.location.hash = HOME_ROUTE;
+        }}
+        onNextProject={() => {
+          window.location.hash = PROJECT_ROUTES["ibm-skillsbuild"];
+        }}
       />
     );
   }
-  if (currentPage === "ibm-skillsbuild") {
-    return <IBMSkillsBuild onBack={() => setCurrentPage("home")} />;
+  if (currentRoute === PROJECT_ROUTES["ibm-skillsbuild"]) {
+    return (
+      <IBMSkillsBuild
+        onBack={() => {
+          window.location.hash = HOME_ROUTE;
+        }}
+      />
+    );
   }
 
-  return (
-    <Home
-      onOpenClosetCloud={() => setCurrentPage("closetcloud")}
-      onOpenIbmSkillsBuild={() => setCurrentPage("ibm-skillsbuild")}
-    />
-  );
+  return <Home projectRoutes={PROJECT_ROUTES} />;
 }
